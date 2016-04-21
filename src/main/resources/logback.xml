@@ -1,0 +1,23 @@
+<configuration debug="true">
+
+    <appender name="myAppender" class="com.sergiv83.MyAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.GEventEvaluator">
+                <expression>e.mdc?.containsKey("serverTrId")</expression>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>NEUTRAL</OnMatch>
+        </filter>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="myAppender" />
+    </root>
+
+    <receiver class="ch.qos.logback.classic.net.SocketReceiver">
+        <remoteHost>localhost</remoteHost>
+        <port>6000</port>
+        <reconnectionDelay>10000</reconnectionDelay>
+    </receiver>
+
+</configuration>
